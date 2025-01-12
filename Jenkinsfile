@@ -4,7 +4,7 @@ pipeline {
     tools {
         nodejs 'nodejs' // Nom de l'installation NodeJS dans Jenkins
         maven 'install maven' // Nom de l'installation Maven dans Jenkins
-        sonarQubeScanner 'sonarqube' 
+        sonarQubeScanner 'sonarqube' // Nom de l'installation SonarQube Scanner
     }
 
     stages {
@@ -20,24 +20,7 @@ pipeline {
             }
         }
 
-        // stage('Build Frontend React') {
-        //     steps {
-        //         dir("${env.WORKSPACE}/react-crud-web-api-master") {
-        //             sh "npm install" // Installer les dépendances Node.js
-        //             sh "npm run build" // Construire le projet React
-        //         }
-        //     }
-        // }
-
-        // stage("Build Backend") {
-        //     steps {
-        //         dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
-        //             sh "npm install" // Installer les dépendances Node.js
-        //             sh "npm run build" // Construire le backend (si applicable)
-        //         }
-        //     }
-        // }
-
+        // Étape de construction de l'image Docker pour le backend
         stage("Build Docker Image Backend") {
             steps {
                 dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
@@ -46,6 +29,7 @@ pipeline {
             }
         }
 
+        // Étape de construction de l'image Docker pour le frontend
         stage("Build Docker Image Frontend") {
             steps {
                 dir("${env.WORKSPACE}/react-crud-web-api-master") {
@@ -54,6 +38,7 @@ pipeline {
             }
         }
 
+        // Lancer Docker Compose pour déployer les services
         stage("Run Docker Compose") {
             steps {
                 dir("nodejs-react-devops") {
@@ -62,10 +47,10 @@ pipeline {
             }
         }
 
-         stage("SonarQube Analysis Backend") {
+        // Analyse SonarQube du backend (Node.js)
+        stage("SonarQube Analysis Backend") {
             steps {
-                // Analyse du backend (Node.js)
-                withSonarQubeEnv("sonarqube") {
+                withSonarQubeEnv("sonarqube") { // Charger l'environnement SonarQube
                     dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
                         sh "sonar-scanner -Dsonar.projectKey=nodejs-backend -Dsonar.sources=." // Analyse SonarQube pour le backend
                     }
@@ -73,10 +58,10 @@ pipeline {
             }
         }
 
+        // Analyse SonarQube du frontend (React)
         stage("SonarQube Analysis Frontend") {
             steps {
-                // Analyse du frontend (React)
-                withSonarQubeEnv("sonarqube") {
+                withSonarQubeEnv("sonarqube") { // Charger l'environnement SonarQube
                     dir("${env.WORKSPACE}/react-crud-web-api-master") {
                         sh "sonar-scanner -Dsonar.projectKey=react-frontend -Dsonar.sources=." // Analyse SonarQube pour le frontend
                     }
@@ -84,5 +69,4 @@ pipeline {
             }
         }
     }
-    }
-
+}
