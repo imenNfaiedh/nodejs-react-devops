@@ -66,7 +66,7 @@ pipeline {
                 // Perform SonarQube analysis
                 withSonarQubeEnv("sonarqube") {
                     dir("${env.WORKSPACE}") {
-                        sh "mvn sonar:sonar"
+                        sh sh "sonar-scanner"
                     }
                 }
             }
