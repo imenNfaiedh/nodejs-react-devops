@@ -70,22 +70,6 @@ pipeline {
         }
 
         // Analyse SonarQube du frontend (React)
-        stage("SonarQube Analysis Frontend") {
-            steps {
-                withSonarQubeEnv("sonarqube") { // Charger la configuration SonarQube
-                    dir("${env.WORKSPACE}/react-crud-web-api-master") {
-                        sh """
-                            sonar-scanner \
-                            -Dsonar.projectKey=react-frontend \
-                            -Dsonar.sources=. \
-                            -Dsonar.host.url=${env.SONAR_HOST_URL} \
-                            -Dsonar.login=${env.SONAR_AUTH_TOKEN} \
-                            -Dsonar.exclusions=node_modules/**,build/** \
-                            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-                        """
-                    }
-                }
-            }
-        }
+        
     }
 }
