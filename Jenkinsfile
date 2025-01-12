@@ -61,15 +61,27 @@ pipeline {
             }
         }
 
-         stage("SonarQube Analysis") {
+         stage("SonarQube Analysis Backend") {
             steps {
-                // Perform SonarQube analysis
+                // Analyse du backend (Node.js)
                 withSonarQubeEnv("sonarqube") {
-                    dir("${env.WORKSPACE}") {
-                         sh "sonar-scanner"
+                    dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
+                        sh "sonar-scanner -Dsonar.projectKey=nodejs-backend -Dsonar.sources=." // Analyse SonarQube pour le backend
                     }
                 }
             }
         }
+
+        stage("SonarQube Analysis Frontend") {
+            steps {
+                // Analyse du frontend (React)
+                withSonarQubeEnv("sonarqube") {
+                    dir("${env.WORKSPACE}/react-crud-web-api-master") {
+                        sh "sonar-scanner -Dsonar.projectKey=react-frontend -Dsonar.sources=." // Analyse SonarQube pour le frontend
+                    }
+                }
+            }
+        }
+    }
     }
 }
