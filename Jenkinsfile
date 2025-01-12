@@ -19,23 +19,23 @@ pipeline {
             }
         }
 
-        stage('Build Frontend React') {
-            steps {
-                dir("${env.WORKSPACE}/react-crud-web-api-master") {
-                    sh "npm install" // Installer les dépendances Node.js
-                    sh "npm run build" // Construire le projet React
-                }
-            }
-        }
+        // stage('Build Frontend React') {
+        //     steps {
+        //         dir("${env.WORKSPACE}/react-crud-web-api-master") {
+        //             sh "npm install" // Installer les dépendances Node.js
+        //             sh "npm run build" // Construire le projet React
+        //         }
+        //     }
+        // }
 
-        stage("Build Backend") {
-            steps {
-                dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
-                    sh "npm install" // Installer les dépendances Node.js
-                    sh "npm run build" // Construire le backend (si applicable)
-                }
-            }
-        }
+        // stage("Build Backend") {
+        //     steps {
+        //         dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
+        //             sh "npm install" // Installer les dépendances Node.js
+        //             sh "npm run build" // Construire le backend (si applicable)
+        //         }
+        //     }
+        // }
 
         stage("Build Docker Image Backend") {
             steps {
