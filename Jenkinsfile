@@ -60,7 +60,7 @@ pipeline {
                             -Dsonar.projectKey=nodejs-backend \
                             -Dsonar.sources=. \
                             -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=${env.sonarqube-token \
+                            -Dsonar.login=sonarqube-token \
                             -Dsonar.exclusions=node_modules/**,test/** \
                             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
                         """
