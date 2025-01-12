@@ -4,8 +4,7 @@ pipeline {
     tools {
         nodejs 'nodejs' // Nom de l'installation NodeJS dans Jenkins
         maven 'install maven' // Nom de l'installation Maven dans Jenkins
-        sonarQubeScanner 'sonarqube' // Nom de l'installation SonarQube Scanner
-    }
+       
 
     stages {
         stage("Clean up") {
