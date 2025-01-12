@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend
+      context: ./nodejs-express-sequelize-mysql-master
     ports:
       - "8080:8080"
     environment:
@@ -13,7 +13,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./react-crud-web-api-master
     ports:
       - "3000:80"
     depends_on:
