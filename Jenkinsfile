@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         nodejs 'nodejs' // Nom de l'installation NodeJS dans Jenkins
-        sonarScanner 'sonar-scanner'
+        
         
     }
    
