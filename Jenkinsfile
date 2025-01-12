@@ -51,22 +51,26 @@ pipeline {
 
         //Analyse SonarQube du backend (Node.js)
         stage("SonarQube Analysis Backend") {
-            steps {
-                withSonarQubeEnv("sonarqube") { // Charger la configuration SonarQube
-                    dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
-                        sh """
-                            sonar-scanner \
-                            -Dsonar.projectKey=nodejs-backend \
-                            -Dsonar.sources=. \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=sonarqube-token \
-                            -Dsonar.exclusions=node_modules/**,test/** \
-                            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-                        """
-                    }
-                }
-            }
+    steps {
+        script {
+            // Utilisation du scanner SonarQube dans Jenkins
+            sonarScanner (
+                installationName: 'SonarQube Scanner', // Nom de l'installation SonarQube dans Jenkins
+                projectKey: 'nodejs-backend', // Clé du projet dans SonarQube
+                projectName: 'Node.js Backend', // Nom du projet dans SonarQube
+                projectVersion: '1.0', // Version du projet
+                sources: '.', // Répertoire des sources à analyser
+                exclusions: '**/node_modules/**,**/test/**', // Exclusions pour l'analyse
+                lcovReportPaths: 'coverage/lcov.info', // Chemin vers le rapport LCOV pour la couverture de test
+                sonarHostURL: 'http://localhost:9000', // URL de votre serveur SonarQube
+                login: 'sonarqube-token' // Token d'authentification pour SonarQube
+            )
         }
+    }
+}
+
+        
+               
 
         // Analyse SonarQube du frontend (React)
         
