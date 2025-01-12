@@ -60,5 +60,16 @@ pipeline {
                 }
             }
         }
+
+         stage("SonarQube Analysis") {
+            steps {
+                // Perform SonarQube analysis
+                withSonarQubeEnv("sonarqube") {
+                    dir("${env.WORKSPACE}") {
+                        sh "mvn sonar:sonar"
+                    }
+                }
+            }
+        }
     }
 }
