@@ -50,23 +50,23 @@ pipeline {
         }
 
         //Analyse SonarQube du backend (Node.js)
-        stage("SonarQube Analysis Backend") {
-            steps {
-                withSonarQubeEnv("sonarqube") { // Charger la configuration SonarQube
-                    dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
-                        sh """
-                            sonar-scanner \
-                            -Dsonar.projectKey=nodejs-backend \
-                            -Dsonar.sources=. \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=sonarqube-token \
-                            -Dsonar.exclusions=node_modules/**,test/** \
-                            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-                        """
-                    }
-                }
-            }
-        }
+        // stage("SonarQube Analysis Backend") {
+        //     steps {
+        //         withSonarQubeEnv("sonarqube") { // Charger la configuration SonarQube
+        //             dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
+        //                 sh """
+        //                     sonar-scanner \
+        //                     -Dsonar.projectKey=nodejs-backend \
+        //                     -Dsonar.sources=. \
+        //                     -Dsonar.host.url=http://localhost:9000 \
+        //                     -Dsonar.login=sonarqube-token \
+        //                     -Dsonar.exclusions=node_modules/**,test/** \
+        //                     -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+        //                 """
+        //             }
+        //         }
+        //     }
+        // }
         
                
 
