@@ -31,7 +31,8 @@ pipeline {
         stage("Build Backend") {
             steps {
                 dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
-                    sh "mvn clean install" // Construire le projet backend avec Maven
+                    sh "npm install" // Installer les dépendances Node.js
+                    sh "npm run build" // Construire le backend (si applicable)
                 }
             }
         }
