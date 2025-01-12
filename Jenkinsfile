@@ -3,11 +3,9 @@ pipeline {
 
     tools {
         nodejs 'nodejs' // Nom de l'installation NodeJS dans Jenkins
-         sonarQubeScanner 'sonarqube'
+        
     }
-    environment {
-        SONAR_SCANNER_OPTS = "-Xmx1024m" // Options de mémoire pour le scanner
-    }
+   
        
 
     stages {
