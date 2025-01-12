@@ -2,64 +2,60 @@ pipeline {
     agent any
 
     tools {
-
-        nodejs 'nodejs' // ' ' Le nom que vous avez donné à votre installation NodeJS dans Jenkins
-        maven 'install maven' // Define Maven tool to be used
+        nodejs 'nodejs' // Nom de l'installation NodeJS dans Jenkins
+        maven 'install maven' // Nom de l'installation Maven dans Jenkins
     }
-   stages {
+
+    stages {
         stage("Clean up") {
             steps {
-                deleteDir() // Clean up the workspace before starting
+                deleteDir() // Nettoyer l'espace de travail avant de commencer
             }
         }
 
         stage("Checkout SCM") {
             steps {
-                checkout scm
+                checkout scm // Vérifier le code source du gestionnaire de contrôle de version
             }
         }
-    stage('Build Frontend React') {
-            steps {
-                // Se déplacer dans le répertoire du frontend Angular
-                dir("${env.WORKSPACE}/react-crud-web-api-master") {
-                    // Installer les dépendances Angular
-                    sh "npm install"
 
-                    // Construire le projet Angular
-                    sh "npm run build"
-                }
-            }
-        }
-      stage("Build Backend") {
+        stage('Build Frontend React') {
             steps {
-                // Navigate to the project directory and build the Maven project
-                dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
-                    sh "mvn clean install"
+                dir("${env.WORKSPACE}/react-crud-web-api-master") {
+                    sh "npm install" // Installer les dépendances Node.js
+                    sh "npm run build" // Construire le projet React
                 }
             }
         }
-      stage("Build Docker Image Backend") {
+
+        stage("Build Backend") {
             steps {
-                // Build the Docker image using the Dockerfile
                 dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
-                    sh "docker build -t backend ."
+                    sh "mvn clean install" // Construire le projet backend avec Maven
                 }
             }
         }
+
+        stage("Build Docker Image Backend") {
+            steps {
+                dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
+                    sh "docker build -t backend ." // Construire l'image Docker pour le backend
+                }
+            }
+        }
+
         stage("Build Docker Image Frontend") {
             steps {
-                // Build the Docker image using the Dockerfile
                 dir("${env.WORKSPACE}/react-crud-web-api-master") {
-                    sh "docker build -t frontend ."
+                    sh "docker build -t frontend ." // Construire l'image Docker pour le frontend
                 }
             }
         }
 
         stage("Run Docker Compose") {
             steps {
-                // Run Docker Compose to start the application
-                dir("nodejs-react-devops") {
-                    sh "docker compose up -d"
+                dir("${env.WORKSPACE}/nodejs-react-devops") {
+                    sh "docker compose up -d" // Lancer Docker Compose en mode détaché
                 }
             }
         }
