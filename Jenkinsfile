@@ -50,7 +50,7 @@ pipeline {
             }
         }
 
-        / Analyse SonarQube du backend (Node.js)
+        //Analyse SonarQube du backend (Node.js)
         stage("SonarQube Analysis Backend") {
             steps {
                 withSonarQubeEnv("sonarqube") { // Charger la configuration SonarQube
