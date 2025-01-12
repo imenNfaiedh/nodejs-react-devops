@@ -65,7 +65,7 @@ pipeline {
                     }
                 }
             }
-        
+        }
 
         // Analyse SonarQube du frontend (React)
         
