@@ -3,7 +3,10 @@ pipeline {
 
     tools {
         nodejs 'nodejs' // Nom de l'installation NodeJS dans Jenkins
-        maven 'install maven' // Nom de l'installation Maven dans Jenkins
+         sonarQubeScanner 'sonarqube'
+    }
+    environment {
+        SONAR_SCANNER_OPTS = "-Xmx1024m" // Options de mémoire pour le scanner
     }
        
 
@@ -47,12 +50,20 @@ pipeline {
             }
         }
 
-        // Analyse SonarQube du backend (Node.js)
+        / Analyse SonarQube du backend (Node.js)
         stage("SonarQube Analysis Backend") {
             steps {
-                withSonarQubeEnv("sonarqube") { // Charger l'environnement SonarQube
+                withSonarQubeEnv("sonarqube") { // Charger la configuration SonarQube
                     dir("${env.WORKSPACE}/nodejs-express-sequelize-mysql-master") {
-                        sh "sonar-scanner -Dsonar.projectKey=nodejs-backend -Dsonar.sources=." // Analyse SonarQube pour le backend
+                        sh """
+                            sonar-scanner \
+                            -Dsonar.projectKey=nodejs-backend \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=${env.SONAR_HOST_URL} \
+                            -Dsonar.login=${env.SONAR_AUTH_TOKEN} \
+                            -Dsonar.exclusions=node_modules/**,test/** \
+                            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+                        """
                     }
                 }
             }
@@ -61,9 +72,17 @@ pipeline {
         // Analyse SonarQube du frontend (React)
         stage("SonarQube Analysis Frontend") {
             steps {
-                withSonarQubeEnv("sonarqube") { // Charger l'environnement SonarQube
+                withSonarQubeEnv("sonarqube") { // Charger la configuration SonarQube
                     dir("${env.WORKSPACE}/react-crud-web-api-master") {
-                        sh "sonar-scanner -Dsonar.projectKey=react-frontend -Dsonar.sources=." // Analyse SonarQube pour le frontend
+                        sh """
+                            sonar-scanner \
+                            -Dsonar.projectKey=react-frontend \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=${env.SONAR_HOST_URL} \
+                            -Dsonar.login=${env.SONAR_AUTH_TOKEN} \
+                            -Dsonar.exclusions=node_modules/**,build/** \
+                            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+                        """
                     }
                 }
             }
