@@ -55,7 +55,7 @@ pipeline {
 
         stage("Run Docker Compose") {
             steps {
-                dir("${env.WORKSPACE}/nodejs-react-devops") {
+                dir("nodejs-react-devops") {
                     sh "docker compose up -d" // Lancer Docker Compose en mode détaché
                 }
             }
